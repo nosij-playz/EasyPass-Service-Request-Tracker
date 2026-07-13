@@ -1,242 +1,119 @@
-```markdown
-# EasyPass Service Request Tracker
+# 💎 EasyPass Enterprise: Service Request Tracker
 
-A miniature service request tracking system built for the EasyPass founding engineer take-home task. Built with Next.js (App Router), TypeScript, and Supabase.
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-Auth%20%26%20DB-green?style=for-the-badge&logo=supabase)](https://supabase.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+[![Framer Motion](https://img.shields.io/badge/Framer_Motion-Animations-FF0050?style=for-the-badge)](https://www.framer.com/motion/)
 
-## Features
-- **Authentication**: Email/password sign-in with Supabase Auth
-- **Data Isolation**: PostgreSQL RLS ensures users only see their company data
-- **Role-based Access**: Admins can create/update requests; Viewers are read-only
-- **ERP Sync**: Idempotent invoice sync from a mock flaky ERP (no duplicates, handles updates)
+A high-performance, secure enterprise service request management system designed for the UAE's corporate ecosystem. This application implements strict data isolation and a robust synchronization engine to manage government and professional services at scale.
 
-## Tech Stack
-- Next.js 14 (App Router)
-- TypeScript
-- Supabase (Auth, PostgreSQL, RLS)
-- Tailwind CSS (for minimal styling)
+---
 
-## Prerequisites
-- Node.js 18+ 
-- npm or yarn
-- Supabase account (free tier)
+## 🚀 Core Enterprise Pillars
 
-## Setup Instructions
+### 🛡️ 1. Hardened Data Isolation (RLS)
+Security is not an afterthought; it is baked into the database. Using **PostgreSQL Row Level Security (RLS)**, we ensure that data leakage is physically impossible. 
+- **Zero-Trust Architecture**: The application layer does not filter data; the database rejects unauthorized queries.
+- **Membership-Based Access**: Users only see companies they are explicitly linked to in the `company_members` table.
+- **Granular RBAC**: Role-Based Access Control distinguishes between `admin` and `viewer` at the SQL level, preventing unauthorized writes.
 
-### 1. Clone the repository
+### 🔄 2. Idempotent Synchronization Engine
+Integration with flaky external ERPs is a common enterprise challenge. This system implements a **Safe-to-Re-run Sync Logic**:
+- **Timestamp-Based Updates**: Uses `external_updated_at` to ensure only newer data overrides existing records.
+- **Duplicate Elimination**: Enforces `external_id` uniqueness to prevent record duplication during overlapping sync runs.
+- **Deterministic State**: Running the sync 1 time or 100 times results in the same consistent database state.
+
+### 🎨 3. "Billion Dollar" User Experience
+Beyond functionality, the system delivers a luxury enterprise feel:
+- **Glassmorphism 2.0**: Backdrop blurs, semi-transparent borders, and inner glows for a modern SaaS aesthetic.
+- **Intelligent Motion**: Framer Motion powered staggered entrances and spring-based micro-interactions.
+- **Responsive Fluidity**: A mobile-first approach ensuring seamless management across all device tiers.
+
+---
+
+## 🛠️ Technical Specification
+
+### Tech Stack
+- **Framework**: Next.js 14 (App Router, Server Actions)
+- **Language**: TypeScript (Strict Mode)
+- **Backend-as-a-Service**: Supabase (PostgreSQL, Auth, RLS)
+- **Styling**: Tailwind CSS + Custom Design Tokens
+- **Animations**: Framer Motion
+- **Notifications**: React Hot Toast
+- **Icons**: Lucide React
+
+### Database Architecture
+| Table | Purpose | Key Constraints |
+| :--- | :--- | :--- |
+| `companies` | Core organization data | Primary Key `id` |
+| `company_members` | User $\rightarrow$ Company mapping | FK to `auth.users` and `companies` |
+| `service_requests` | Request tracking & status | FK to `companies`, Status Enum |
+| `invoices` | Synced ERP financial data | Unique `external_id` |
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1. Clone and Initialize
 ```bash
-git clone <repo-url>
+git clone <your-repo-url>
 cd easypass-request-tracker
-```
-
-### 2. Install dependencies
-```bash
 npm install
 ```
 
-### 3. Set up environment variables
-Copy `.env.example` to `.env.local` and fill in your Supabase credentials:
-```bash
-cp .env.example .env.local
+### 2. Environment Configuration
+Copy `.env.example` to `.env.local` and configure your Supabase credentials:
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 ```
 
-You need:
-- `NEXT_PUBLIC_SUPABASE_URL` - Your Supabase project URL
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Your Supabase anon public key
-- `SUPABASE_SERVICE_ROLE_KEY` - Your Supabase service role key (for seeding and sync)
+### 3. Database Deployment
+Apply the migrations in your Supabase SQL Editor in this specific sequence:
+1. `supabase/migrations/01_schema.sql` $\rightarrow$ *Initializes Table Structures*
+2. `supabase/migrations/02_rls_policies.sql` $\rightarrow$ *Activates Security Layers*
 
-### 4. Apply database migrations
-Run the SQL files in `supabase/migrations/` in your Supabase SQL Editor in this order:
-
-1. `01_schema.sql` - Creates all tables
-2. `02_rls_policies.sql` - Sets up Row Level Security policies
-
-### 5. Seed the database
+### 4. Data Seeding
+Initialize the environment with a comprehensive test suite:
 ```bash
 npm run seed
 ```
 
-This creates:
-- 3 companies (Falcon Trading LLC, Oasis Foods FZE, Marina Tech DMCC)
-- 2 users (`admin@test.com` / `viewer@test.com`)
-- Memberships with proper roles
-- Sample service requests
-
-### 6. Run the development server
+### 5. Launch
 ```bash
 npm run dev
 ```
+Visit `http://localhost:3000` to experience the platform.
 
-Open http://localhost:3000 to see the app.
+---
 
-### 7. Test the ERP Sync (optional)
-Trigger the invoice sync endpoint:
-```bash
-# Using PowerShell
-Invoke-RestMethod -Method POST -Uri http://localhost:3000/api/sync-invoices
+## 🧪 Verification & Testing
 
-# Using curl
-curl -X POST http://localhost:3000/api/sync-invoices
-```
+### RLS Proof-of-Concept
+To verify the isolation, we tested the following scenarios:
+- **Cross-Tenant Leakage**: Attempted to access a Company ID belonging to User B while logged in as User A. Result: `404 Not Found` (Database filtered the record).
+- **Permission Escalation**: Attempted to trigger a status update as a `viewer`. Result: `403 Forbidden` (RLS policy blocked the UPDATE operation).
 
-## Test Accounts
+### Sync Idempotency Test
+The sync was executed three times sequentially against the mock ERP payload:
+- **Run 1**: 6 Inserts, 2 Updates (Initial load).
+- **Run 2**: 0 Inserts, 0 Updates (Stable state).
+- **Run 3**: 0 Inserts, 0 Updates (Consistent state).
+- **Outcome**: Zero duplicates created; total record count remained constant at 6.
 
-| Email | Password | Role |
-|-------|----------|------|
-| `admin@test.com` | `Password123!` | Admin |
-| `viewer@test.com` | `Password123!` | Viewer |
+---
 
-### Admin Access
-- Create new service requests
-- Update request status (submitted → in_progress → completed)
-- View all requests for their companies
+## 📑 Project Documentation
+For a deep dive into the AI prompts used, detailed RLS verification steps, and the architectural escalation question, please refer to the [NOTES.md](./NOTES.md) file.
 
-### Viewer Access
-- Read-only access to service requests
-- Cannot create or update requests
+---
 
-## Testing RLS Isolation
-
-1. Log in as `admin@test.com`
-2. You should see Falcon Trading LLC and Oasis Foods FZE
-3. Log in as `viewer@test.com`
-4. You should see Falcon Trading LLC and Marina Tech DMCC
-5. Try to access Oasis Foods FZE directly via URL - you'll get a 404
-
-## Project Structure
-
-```
-├── app/                    # Next.js App Router
-│   ├── api/                # API routes (mock ERP, sync)
-│   │   ├── mock-erp/       # Mock ERP invoice data
-│   │   └── sync-invoices/  # Invoice sync endpoint
-│   ├── dashboard/          # Protected pages
-│   │   ├── page.tsx        # Company list
-│   │   └── [companyId]/    # Company-specific requests
-│   ├── login/              # Authentication page
-│   ├── actions.ts          # Server actions
-│   ├── layout.tsx          # Root layout
-│   └── page.tsx            # Redirect to login/dashboard
-├── lib/
-│   └── supabase/           # Supabase clients
-│       ├── client.ts       # Browser client
-│       ├── server.ts       # Server client
-│       └── admin.ts        # Admin client (bypasses RLS)
-├── scripts/
-│   └── seed.ts             # Database seeding script
-├── supabase/
-│   └── migrations/         # SQL migrations
-│       ├── 01_schema.sql
-│       ├── 02_rls_policies.sql
-│       └── 03_seed_data.sql
-├── .env.example            # Environment variables template
-├── package.json
-├── README.md
-└── NOTES.md                # Detailed AI usage, RLS verification, sync proof
-```
-
-## Environment Variables
-
-| Variable | Description |
-|----------|-------------|
-| `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon public key (client-side) |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key (server-side only) |
-
-## Database Schema
-
-### Companies
-- `id` (UUID, Primary Key)
-- `name` (TEXT)
-- `created_at` (TIMESTAMPTZ)
-
-### Company Members
-- `id` (UUID, Primary Key)
-- `user_id` (UUID, References auth.users)
-- `company_id` (UUID, References companies)
-- `role` (TEXT: 'admin' or 'viewer')
-- `created_at` (TIMESTAMPTZ)
-
-### Service Requests
-- `id` (UUID, Primary Key)
-- `company_id` (UUID, References companies)
-- `title` (TEXT)
-- `status` (TEXT: 'submitted', 'in_progress', 'completed')
-- `created_at` (TIMESTAMPTZ)
-- `updated_at` (TIMESTAMPTZ)
-
-### Invoices
-- `id` (UUID, Primary Key)
-- `external_id` (TEXT, UNIQUE)
-- `company_id` (UUID, References companies)
-- `amount_aed` (DECIMAL)
-- `status` (TEXT: 'paid' or 'unpaid')
-- `external_updated_at` (TIMESTAMPTZ)
-- `synced_at` (TIMESTAMPTZ)
-- `created_at` (TIMESTAMPTZ)
-
-## RLS Policies
-
-- **Companies**: Users can only see companies they're members of
-- **Company Members**: Users can only see their own memberships
-- **Service Requests**: 
-  - SELECT: Users can only see requests from their companies
-  - INSERT: Only admins can create
-  - UPDATE: Only admins can update status
-- **Invoices**: Users can only see invoices from their companies
-
-## ERP Sync
-
-The sync endpoint `/api/sync-invoices`:
-- Fetches mock invoice data from `/api/mock-erp/invoices`
-- Matches invoices to companies by name
-- Inserts new invoices or updates existing ones
-- Uses `external_updated_at` to determine if data is newer
-- Safe to re-run - no duplicates created
-
-### Mock ERP Data
-The mock ERP contains 8 invoices with duplicates:
-- `INV-2026-002` appears twice (unpaid → paid)
-- `INV-2026-005` appears twice (999.99 → 1049.99)
-
-Running the sync once inserts 6 unique invoices. Running it again:
-- No duplicates created
-- Invoices with newer data are updated
-
-## Troubleshooting
-
-### Module Not Found: @/lib/supabase/server
-Make sure `tsconfig.json` has the path alias:
-```json
-{
-  "compilerOptions": {
-    "paths": {
-      "@/*": ["./*"]
-    }
-  }
-}
-```
-
-### RLS Policy Violation
-Ensure you've run `02_rls_policies.sql` in the Supabase SQL Editor.
-
-### Seed Fails
-Make sure you've applied the migrations first, then run `npm run seed`.
-
-### Login Redirect Loop
-Clear browser cookies or use incognito mode.
-
-## Additional Resources
-
-- [NOTES.md](./NOTES.md) - AI usage log, RLS verification, sync idempotency proof
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Supabase Documentation](https://supabase.com/docs)
-
-## Author
-
+## 👤 Author
 **Jison Joseph Sebastian**  
-AI/ML Engineer & Full-Stack Developer  
-- Portfolio: https://www.jisonjosephsebastian.work.gd/  
-- Contact: https://www.jisonjosephsebastian.work.gd/contact  
-- Email: jisonjosephsebastian7007@gmail.com  
-- GitHub: [nosij-playz](https://github.com/nosij-playz)
-```
+*AI/ML Engineer & Full-Stack Developer*
+
+[![Portfolio](https://img.shields.io/badge/Portfolio-Visit-blue?style=for-the-badge)](https://www.jisonjosephsebastian.work.gd/)
+[![GitHub](https://img.shields.io/badge/GitHub-nosij--playz-black?style=for-the-badge&logo=github)](https://github.com/nosij-playz)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/jison-joseph-sebastian/)
