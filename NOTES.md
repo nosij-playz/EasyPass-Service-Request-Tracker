@@ -1,5 +1,5 @@
 # 📝 Engineering & AI Implementation Log
-
+	
 This document serves as the technical retrospective and verification record for the EasyPass Service Request Tracker. It documents the synergy between human engineering and AI assistance, proving the system's security and reliability.
 
 ---
@@ -7,9 +7,9 @@ This document serves as the technical retrospective and verification record for 
 ## 🤖 1. AI Orchestration Log
 
 ### 🛠️ Toolset Used
-- **Claude 3.5 Sonnet** (Primary Architect) $\rightarrow$ High-level design, complex RLS logic, and "Billion Dollar" UI system.
-- **Cursor IDE** $\rightarrow$ Rapid prototyping and inline refactoring.
+- **DeepSeek-V4 preview** $\rightarrow$ Advanced logic and architectural insights.
 - **ChatGPT-4** $\rightarrow$ Quick syntax validation and edge-case brainstorming.
+- **Gemma 4 with Claude Code** $\rightarrow$ Primary agentic orchestration, implementation, and codebase management.
 
 ### 💡 Strategic Prompting
 I utilized a multi-stage prompting strategy to ensure the system wasn't just "generated" but "engineered."
@@ -39,7 +39,7 @@ FOR SELECT USING (user_id = auth.uid());
 **The Correction**: I manually redesigned the policy to use a subquery that validates membership through the join table:
 ```sql
 CREATE POLICY "Users view their company requests" ON service_requests
-FOR SELECT USING (
+FOR SELECT UNSIGNED (
     EXISTS (
         SELECT 1 FROM company_members
         WHERE company_members.company_id = service_requests.company_id
