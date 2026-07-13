@@ -1,0 +1,20 @@
+// app/api/mock-erp/invoices/route.ts
+import { NextResponse } from 'next/server'
+
+const mockPayload = {
+  source: "mock-erp",
+  invoices: [
+    { external_id: "INV-2026-001", company_name: "Falcon Trading LLC", amount_aed: 1500.00, status: "paid", updated_at: "2026-06-01T09:00:00Z" },
+    { external_id: "INV-2026-002", company_name: "Falcon Trading LLC", amount_aed: 820.50, status: "unpaid", updated_at: "2026-06-03T11:30:00Z" },
+    { external_id: "INV-2026-003", company_name: "Oasis Foods FZE", amount_aed: 4200.00, status: "unpaid", updated_at: "2026-06-05T14:10:00Z" },
+    { external_id: "INV-2026-004", company_name: "Oasis Foods FZE", amount_aed: 310.00, status: "paid", updated_at: "2026-06-08T08:45:00Z" },
+    { external_id: "INV-2026-005", company_name: "Marina Tech DMCC", amount_aed: 999.99, status: "unpaid", updated_at: "2026-06-10T16:20:00Z" },
+    { external_id: "INV-2026-006", company_name: "Marina Tech DMCC", amount_aed: 2750.00, status: "paid", updated_at: "2026-06-12T10:05:00Z" },
+    { external_id: "INV-2026-002", company_name: "Falcon Trading LLC", amount_aed: 820.50, status: "paid", updated_at: "2026-06-15T09:00:00Z" },
+    { external_id: "INV-2026-005", company_name: "Marina Tech DMCC", amount_aed: 1049.99, status: "unpaid", updated_at: "2026-06-16T13:40:00Z" }
+  ]
+}
+
+export async function GET() {
+  return NextResponse.json(mockPayload)
+}

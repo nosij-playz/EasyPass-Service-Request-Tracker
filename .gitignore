@@ -1,0 +1,36 @@
+﻿# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+.pnp.mjs
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Next.js
+/.next
+/out
+
+# Build
+/dist
+/build
+
+# Misc
+.DS_Store
+*.pem
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing
+/coverage
+
+# Temporary
+*.tmp
+*.temp
