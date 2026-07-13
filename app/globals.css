@@ -1,20 +1,60 @@
-/* app/globals.css */
-* {
-  box-sizing: border-box;
-  margin: 0;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-blue: #2563EB;
+  --primary-indigo: #4F46E5;
+  --primary-purple: #7C3AED;
 }
 
 body {
-  font-family: system-ui, -apple-system, sans-serif;
-  background: #f9fafb;
-  color: #111827;
-  line-height: 1.6;
+  @apply bg-slate-50 text-slate-900 font-sans;
+  overflow-x: hidden;
 }
 
-button {
-  cursor: pointer;
+/* Glassmorphism Utilities */
+@layer components {
+  .glass-card {
+    @apply backdrop-blur-lg bg-white/70 border border-white/20 shadow-xl;
+    background-image: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 100%);
+  }
+
+  .glass-card-dark {
+    @apply backdrop-blur-lg bg-slate-900/70 border border-slate-700/30 shadow-xl;
+    background-image: linear-gradient(135deg, rgba(15,23,42,0.4) 0%, rgba(15,23,42,0.1) 100%);
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-blue via-primary-indigo to-primary-purple;
+  }
+
+  .gradient-button {
+    @apply bg-gradient-to-r from-primary-blue via-primary-indigo to-primary-purple text-white transition-all duration-300 hover:shadow-primary hover:scale-105 active:scale-95;
+  }
 }
 
-a {
-  text-decoration: none;
+/* Background Blobs Animation */
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
+.blob {
+  @apply absolute blur-3xl opacity-30 pointer-events-none;
+  animation: float 20s infinite ease-in-out;
+}
+
+/* Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded-full hover:bg-slate-400 transition-colors;
 }

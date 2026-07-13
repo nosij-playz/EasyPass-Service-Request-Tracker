@@ -3,7 +3,8 @@
 /.pnp
 .pnp.js
 .pnp.mjs
-
+/.claude
+.gitignore
 # Environment
 .env
 .env.local

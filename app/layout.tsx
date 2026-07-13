@@ -1,5 +1,5 @@
-// app/layout.tsx
 import './globals.css'
+import { Toaster } from 'react-hot-toast'
 
 export const metadata = {
   title: 'EasyPass - Service Request Tracker',
@@ -13,7 +13,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="min-h-screen overflow-x-hidden">
+        <main className="relative">
+          {children}
+        </main>
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            className: 'glass-card !rounded-2xl !p-4 !shadow-xl',
+            duration: 3000,
+          }}
+        />
+      </body>
     </html>
   )
 }

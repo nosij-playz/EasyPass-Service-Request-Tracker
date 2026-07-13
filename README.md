@@ -8,6 +8,16 @@
 
 A high-performance, secure enterprise service request management system designed for the UAE's corporate ecosystem. This application implements strict data isolation and a robust synchronization engine to manage government and professional services at scale.
 
+## 📸 Screenshots
+
+<p align="center">
+  <img src="display/1.png" width="45%" />
+  <img src="display/2.png" width="45%" />
+  <br />
+  <img src="display/3.png" width="45%" />
+  <img src="display/4.png" width="45%" />
+</p>
+
 ---
 
 ## 🚀 Core Enterprise Pillars
@@ -57,7 +67,7 @@ Beyond functionality, the system delivers a luxury enterprise feel:
 
 ### 1. Clone and Initialize
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/nosij-playz/EasyPass-Service-Request-Tracker.git
 cd easypass-request-tracker
 npm install
 ```
