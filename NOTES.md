@@ -1,3 +1,4 @@
+```markdown
 # NOTES.md
 
 ## 1. AI Usage Log
@@ -276,10 +277,10 @@ POST /api/sync-invoices
 ### Why This Decision Matters
 
 In the real EasyPass product, the ERP sync is a **critical financial integration**. Getting it wrong could:
-- ✅ Cause duplicate invoice entries (financial reporting errors)
-- ✅ Show incorrect payment status (collection issues)
-- ✅ Lose audit trail (compliance problems)
-- ✅ Impact user trust (business relationships)
+- Cause duplicate invoice entries (financial reporting errors)
+- Show incorrect payment status (collection issues)
+- Lose audit trail (compliance problems)
+- Impact user trust (business relationships)
 
 These decisions need **business context**, **technical constraints**, and **regulatory requirements** - which is why I would never make this decision alone.
 
@@ -362,4 +363,18 @@ POST http://localhost:3000/api/sync-invoices
 
 ---
 
+## 8. Author Information
+
+**Jison Joseph Sebastian**  
+- **Role:** AI/ML Engineer & Full-Stack Developer  
+- **Portfolio:** https://www.jisonjosephsebastian.work.gd/  
+- **Contact:** https://www.jisonjosephsebastian.work.gd/contact  
+- **Email:** jisonjosephsebastian7007@gmail.com  
+- **GitHub:** [nosij-playz](https://github.com/nosij-playz)
+
+This submission was completed as part of the EasyPass Founding Engineer Intern take-home task.
+
+---
+
 *This NOTES.md documents my approach, decisions, and verification methods for the EasyPass Service Request Tracker take-home task.*
+```
